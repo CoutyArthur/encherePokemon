@@ -34,7 +34,7 @@ public class PokemonAPI {
         try{
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://pokeapi.co/api/v2/abilities/" + id))
+                    .uri(URI.create("https://pokeapi.co/api/v2/characteristic/" + id))
                     .build();
 
             HttpResponse<String> response = client.send(request,

@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'io.quarkus'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        mavenLocal()
+    }
+}
+
+subprojects {
+    apply plugin:"java"
+    apply plugin:"io.quarkus"
+    dependencies {
+        implementation enforcedPlatform("${quarkusPlatformGroupId}:${quarkusPlatformArtifactId}:${quarkusPlatformVersion}")
+        implementation 'io.quarkus:quarkus-rest'
+        implementation 'io.quarkus:quarkus-rest-jackson'
+        implementation 'io.quarkus:quarkus-rest-client-jackson'
+        implementation 'io.quarkus:quarkus-arc'
+
+        implementation 'io.quarkus:quarkus-jdbc-h2'
+        implementation 'io.quarkus:quarkus-hibernate-orm'
+    }
+
+
+    group 'com.CoutyArthur'
+    version '1.0-SNAPSHOT'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    compileJava {
+        options.encoding = 'UTF-8'
+        options.compilerArgs << '-parameters'
+    }
+}

@@ -12,14 +12,18 @@ public class Administrateur {
     @PersistenceContext
     private EntityManager em;
 
-    public Utilisateur creerUtilisateur(String nom) {
+    @Transactional
+    public Utilisateur creerUtilisateur(String nom, String email) {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setNom(nom);
         utilisateur.setLimcoins(1000);
+        utilisateur.setEmail(email);
+        utilisateur.setPokemonsPossedes(List.of()); // Liste vide par défaut
+        utilisateur.setPokemonsFavoris(List.of()); // Liste vide par défaut
         em.persist(utilisateur);
         return utilisateur;
     }
-
+    @Transactional
     public void supprimerUtilisateur(Long id) {
         Utilisateur utilisateur = em.find(Utilisateur.class, id);
         if (utilisateur != null) {
@@ -27,10 +31,11 @@ public class Administrateur {
         }
     }
 
+    @Transactional
     public List<Utilisateur> getUtilisateurs() {
         return em.createQuery("SELECT u FROM Utilisateur u", Utilisateur.class).getResultList();
     }
-
+    @Transactional
     public Utilisateur findUtilisateurById(Long id) {
         return em.find(Utilisateur.class, id);
     }

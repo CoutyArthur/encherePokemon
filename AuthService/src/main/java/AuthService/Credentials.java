@@ -8,6 +8,8 @@ public class Credentials {
     private String username;
     @NotBlank
     private String password;
+    @Email
+    private String email;
 
     public @Email String getEmail() {
         return email;
@@ -17,8 +19,6 @@ public class Credentials {
         this.email = email;
     }
 
-    @Email
-    private String email;
 
     public String getUsername() {
         return username;
@@ -35,4 +35,5 @@ public class Credentials {
     public void setPassword(String password) {
         this.password = password;
     }
+
 }

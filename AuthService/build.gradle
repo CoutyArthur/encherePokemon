@@ -34,6 +34,13 @@ dependencies {
 
     implementation 'io.quarkus:quarkus-smallrye-jwt'
 
+    implementation 'io.quarkus:quarkus-rest-client-reactive:3.2.0.Final'
+    implementation 'io.quarkus:quarkus-rest-client-reactive-jackson:3.2.0.Final'
+    implementation 'io.quarkus:quarkus-rest-client' //
+    implementation "io.quarkus:quarkus-arc"//
+
+
+
 }
 
 group 'com.example'

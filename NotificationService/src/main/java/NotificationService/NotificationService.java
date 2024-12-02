@@ -6,6 +6,8 @@ import jakarta.persistence.PersistenceContext;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
+import jakarta.transaction.Transactional;
+
 import java.util.Properties;
 
 import java.util.List;
@@ -15,6 +17,7 @@ public class NotificationService {
     @PersistenceContext
     private EntityManager em;
 
+    @Transactional
     public void envoyerNotification(Long utilisateurId, String contenu) {
         Notification notification = new Notification();
         notification.setUtilisateurId(utilisateurId);
@@ -22,12 +25,14 @@ public class NotificationService {
         em.persist(notification);
     }
 
+    @Transactional
     public List<Notification> getNotifications(Long utilisateurId) {
         return em.createQuery("SELECT n FROM Notification n WHERE n.utilisateurId = :id", Notification.class)
                 .setParameter("id", utilisateurId)
                 .getResultList();
     }
 
+    @Transactional
     public void notifierFavoris(NotificationRequest notificationRequest) {
         String message = String.format(
                 "Le Pokémon que vous suivez (%s) est arrivé aux enchères. Consultez-le rapidement pour participer !",
@@ -36,10 +41,12 @@ public class NotificationService {
         envoyerEmail(notificationRequest.getEmail(), "Pokemon Favori Disponible", message);
     }
 
+    @Transactional
     public void notifierEnchere(NotificationRequest notificationRequest) {
         envoyerEmail(notificationRequest.getEmail(), notificationRequest.getSubject(), notificationRequest.getMessage());
     }
 
+    @Transactional
     public void envoyerEmail(String to, String subject, String content) {
         // Configuration SMTP
         Properties props = new Properties();

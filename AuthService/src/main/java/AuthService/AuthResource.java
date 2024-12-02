@@ -51,17 +51,24 @@ public class AuthResource {
         // Crée un nouvel utilisateur
         userService.createUser(credentials.getUsername(), hashedPassword, "USER",credentials.getEmail()); // Rôle par défaut
 
-        // Appelle AdminService pour créer un Utilisateur
-        UtilisateurRequest utilisateurRequest = new UtilisateurRequest();
-        utilisateurRequest.setNom(credentials.getUsername());
-        utilisateurRequest.setEmail(credentials.getEmail());
 
-        try {
-            adminClient.creerUtilisateur(utilisateurRequest);
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Erreur lors de la création de l'utilisateur dans AdminService.").build();
+        // Ignorer les utilisateurs avec le rôle ADMIN
+        if (!credentials.getUsername().equalsIgnoreCase("admin")) {
+
+            // Appelle AdminService pour créer un Utilisateur
+            UtilisateurRequest utilisateurRequest = new UtilisateurRequest();
+            utilisateurRequest.setNom(credentials.getUsername());
+            utilisateurRequest.setEmail(credentials.getEmail());
+
+            try {
+                adminClient.creerUtilisateur(utilisateurRequest);
+            } catch (Exception e) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .entity("Erreur lors de la création de l'utilisateur dans AdminService.").build();
+            }
         }
+
+
         logger.info("Utilisateur crée avec succés ");
         return Response.status(Response.Status.CREATED).entity("Utilisateur créé avec succès.").build();
     }

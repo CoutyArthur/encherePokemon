@@ -27,6 +27,7 @@ const Favorites = () => {
         {favorites.map((pokemon) => (
           <ListItem key={pokemon.id}>
             <ListItemText primary={pokemon.name} />
+            <Button onClick={() => handleRemoveFromFavorites(pokemon.id)}>Retirer</Button>
           </ListItem>
         ))}
       </List>

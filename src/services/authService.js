@@ -1,20 +1,43 @@
-import apiClient from "./apiClient";
+import axios from "axios";
+import jwtDecode from "jwt-decode";
 
-const authService = {
-  login: async (username, password) => {
-    const response = await apiClient.post("/auth/login", { username, password });
-    return response.data; // Retourne le token JWT
-  },
+const API_URL = "http://localhost:8080/auth";
 
-  signup: async (username, password, email) => {
-    const response = await apiClient.post("/auth/signup", { username, password, email });
-    return response.data; // Retourne un message de succès
-  },
+const getLoginFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
 
-  validateToken: async () => {
-    const response = await apiClient.get("/auth/validate");
-    return response.data; // Retourne les claims du token
-  },
+  const decoded = jwtDecode(token);
+  return decoded.sub; // Supposons que le login est stocké dans le champ `sub`
 };
 
-export default authService;
+
+const login = async (username, password) => {
+  const response = await axios.post(`${API_URL}/login`, { username, password });
+  return response.data; // Retourne le token JWT
+};
+
+const signup = async (userData) => {
+  const response = await axios.post(`${API_URL}/signup`, userData);
+  return response.data;
+};
+const getRoleFromToken = () => {
+  const token = localStorage.getItem("token");
+  if (!token) return null;
+
+  const decoded = jwtDecode(token);
+  return decoded.role; // Le rôle est stocké dans le champ `role` du token JWT
+};
+
+const changePassword = async (userId, newPassword) => {
+  const response = await axios.put(`${API_URL}/users/${userId}/password`, { password: newPassword });
+  return response.data;
+};
+
+export default {
+  getLoginFromToken,
+  login,
+  signup,
+  getRoleFromToken,
+  changePassword,
+};

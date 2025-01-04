@@ -10,21 +10,33 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-  try {
-    const response = await axios.post("http://localhost:8080/auth/login", {
-      username,
-      password,
-    });
-    localStorage.setItem("token", response.data.token);
-    navigate("/auctions");
-  } catch (err) {
-    if (err.response && err.response.data) {
-      setError(err.response.data); // Affiche le message renvoyé par le backend
-    } else {
-      setError("Une erreur s'est produite. Veuillez réessayer.");
+    try {
+      const response = await axios.post("http://localhost:8080/auth/login", {
+        username,
+        password,
+      });
+      localStorage.setItem("token", response.data.token);
+  
+      const user = await axios.get("http://localhost:8080/auth/me", {
+        headers: {
+          Authorization: `Bearer ${response.data.token}`,
+        },
+      });
+  
+      if (user.data.role === "ADMIN") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard");
+      }
+    } catch (err) {
+      setError(
+        err.response && err.response.data
+          ? err.response.data
+          : "Une erreur s'est produite. Veuillez réessayer."
+      );
     }
-  }
-};
+  };
+  
 
 
   return (

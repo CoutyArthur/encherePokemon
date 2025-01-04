@@ -16,12 +16,6 @@ const Header = () => {
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           Auction App
         </Typography>
-        <Button color="inherit" onClick={() => navigate("/auctions")}>
-          Enchères
-        </Button>
-        <Button color="inherit" onClick={() => navigate("/favorites")}>
-          Favoris
-        </Button>
         <Button color="inherit" onClick={handleLogout}>
           Déconnexion
         </Button>
